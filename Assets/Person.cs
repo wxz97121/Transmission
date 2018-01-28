@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Text;
 
+
 public class Person : MonoBehaviour
 {
     [SerializeField]
@@ -109,7 +110,7 @@ public class Person : MonoBehaviour
 
     IEnumerator JumpProcess()
     {
-        Debug.Log(GetComponent<RectTransform>().rect.position);
+        //Debug.Log(GetComponent<RectTransform>().rect.position);
         float jumptime = 0.15f;
         while (!Done)
         {

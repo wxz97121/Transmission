@@ -21,6 +21,7 @@ public class Person : MonoBehaviour
     private Text PopupText;
     private Text m_title;
     static private ShrinkText m_CalcText;
+    Vector3 pos;
     [HideInInspector]
     public bool Done = true;
     private void Awake()
@@ -33,6 +34,11 @@ public class Person : MonoBehaviour
         if (m_CalcText==null)
             m_CalcText = GameObject.Find("CalcTextBox").GetComponent<ShrinkText>();
         ID = id;
+    }
+
+    private void Start()
+    {
+        pos = transform.position;
     }
 
     void UpdatePic()
@@ -105,11 +111,11 @@ public class Person : MonoBehaviour
         Done = true;
         PopupText.text = "";
         PopupImage.color = ClearColor(PopupImage.color);
+        transform.position=pos;
     }
 
     IEnumerator JumpProcess()
     {
-        Debug.Log(GetComponent<RectTransform>().rect.position);
         float jumptime = 0.15f;
         while (!Done)
         {

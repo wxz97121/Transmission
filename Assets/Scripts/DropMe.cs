@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    public bool CanBeSwap = true;
     public Image containerImage;
     private Color normalColor;
     public Color highlightColor = Color.yellow;
@@ -15,16 +16,30 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     public Person m_Person;
     private GameObject m_DraggingIcons;
     private RectTransform m_DraggingPlanes;
+    private AudioSource m_Audio;
+    private AudioClip SwapAudio;
     private void Awake()
     {
+        SwapAudio = Resources.Load<AudioClip>("Swap");
+        m_Audio = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
         m_Person = GetComponent<Person>();
+        if (containerImage != null)
+            normalColor = containerImage.color;
+    }
+    void PlaySwapAudio()
+    {
+        m_Audio.Stop();
+        m_Audio.clip = SwapAudio;
+        m_Audio.Play();
     }
     public void OnBeginDrag(PointerEventData data)
     {
+        if (!CanBeSwap) return;
+        //PlaySwapAudio();
         var canvas = GetComponentInParent<Canvas>();
         if (canvas == null)
             return;
-        
+
         m_DraggingIcons = new GameObject("icon");
 
         m_DraggingIcons.transform.SetParent(canvas.transform, false);
@@ -45,11 +60,13 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     }
     public void OnEndDrag(PointerEventData data)
     {
+        if (!CanBeSwap) return;
         Destroy(m_DraggingIcons);
         StartCoroutine(CheckIfNull(data.pointerDrag.GetComponent<Person>()));
     }
     public void OnDrag(PointerEventData data)
     {
+        if (!CanBeSwap) return;
         if (m_DraggingIcons)
             SetDraggedPosition(data);
     }
@@ -73,26 +90,26 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         }
     }
 
-    public void OnEnable()
-    {
-        if (containerImage != null)
-            normalColor = containerImage.color;
-    }
 
     public void OnDrop(PointerEventData data)
     {
+        if (!CanBeSwap) return;
         containerImage.color = normalColor;
-        var originalPerson = data.pointerDrag.GetComponent<Person>();
-        //这个地方是不是用m_Person好一点
+        var originalDrop = data.pointerDrag.GetComponent<DropMe>();
+        var originalPerson = originalDrop.m_Person;
         if (originalPerson == null) return;
+        if (!originalDrop.CanBeSwap) return;
+        if (m_Person.ID != originalPerson.ID) PlaySwapAudio();
         int Temp = m_Person.ID;
         m_Person.ID = originalPerson.ID;
         //TODO:这张图片是飞过去的
         originalPerson.ID = Temp;
+
     }
 
     public void OnPointerEnter(PointerEventData data)
     {
+        if (!CanBeSwap) return;
         if (containerImage == null) return;
         containerImage.color = highlightColor;
     }

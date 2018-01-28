@@ -88,7 +88,7 @@ public class Person : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         StopCoroutine("JumpProcess");
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.8f);
         PopupImage.DOFade(0, 0.3f);
         PopupText.DOFade(0, 0.3f);
         Done = true;

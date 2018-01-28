@@ -82,4 +82,9 @@ public class Controller : MonoBehaviour
         m_Audio.clip = Clip;
         m_Audio.Play();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) SceneManager.LoadScene(0);
+        if (Input.GetKeyDown(KeyCode.W)) SceneManager.LoadScene(1);
+    }
 }

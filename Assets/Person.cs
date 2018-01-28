@@ -60,6 +60,9 @@ public class Person : MonoBehaviour
         PopupText.color = FullColor(PopupText.color);
         PopupImage.DOFade(1, 0.3f);
         yield return new WaitForSeconds(0.32f);
+
+        StartCoroutine("JumpProcess");
+
         int now = 0;
         while (now < s.Length)
         {
@@ -77,6 +80,7 @@ public class Person : MonoBehaviour
             PopupText.text = sb.ToString();
             yield return new WaitForSeconds(0.05f);
         }
+        StopCoroutine("JumpProcess");
         yield return new WaitForSeconds(1.5f);
         PopupImage.DOFade(0, 0.3f);
         PopupText.DOFade(0, 0.3f);
@@ -101,6 +105,18 @@ public class Person : MonoBehaviour
         Done = true;
         PopupText.text = "";
         PopupImage.color = ClearColor(PopupImage.color);
+    }
+
+    IEnumerator JumpProcess()
+    {
+        Debug.Log(GetComponent<RectTransform>().rect.position);
+        float jumptime = 0.15f;
+        while (!Done)
+        {
+            transform.DOJump(transform.position, 3.0f, 1, jumptime,true);
+            yield return new WaitForSeconds(jumptime+0.02f);
+        }
+        yield return 0;
     }
     //float Calcsize(string s)
     //{

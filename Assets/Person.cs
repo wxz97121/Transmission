@@ -55,7 +55,7 @@ public class Person : MonoBehaviour
         yield return new WaitForFixedUpdate();
         PopupText.fontSize = m_CalcText.Bestsize;
    
-        print(PopupText.fontSize);
+        //print(PopupText.fontSize);
         StringBuilder sb = new StringBuilder();
         PopupText.color = FullColor(PopupText.color);
         PopupImage.DOFade(1, 0.3f);
@@ -64,7 +64,7 @@ public class Person : MonoBehaviour
         while (now < s.Length)
         {
             float p = Random.value;
-            if (p > 0.5 && now + 1 < s.Length)
+            if (p > 1.2 && now + 1 < s.Length)
             {
 
                 sb.Append(s[now++]);
@@ -75,7 +75,7 @@ public class Person : MonoBehaviour
                 sb.Append(s[now++]);
             }
             PopupText.text = sb.ToString();
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(0.05f);
         }
         yield return new WaitForSeconds(1.5f);
         PopupImage.DOFade(0, 0.3f);

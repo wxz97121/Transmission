@@ -11,6 +11,7 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     public bool CanBeSwap = true;
     public Image containerImage;
     private Color normalColor;
+    private Controller m_Controller;
     public Color highlightColor = Color.yellow;
     [HideInInspector]
     public Person m_Person;
@@ -20,6 +21,7 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     private AudioClip SwapAudio;
     private void Awake()
     {
+        m_Controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>();
         SwapAudio = Resources.Load<AudioClip>("Swap");
         m_Audio = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
         m_Person = GetComponent<Person>();
@@ -34,6 +36,7 @@ public class DropMe : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     }
     public void OnBeginDrag(PointerEventData data)
     {
+        if (m_Controller.isChecking) m_Controller.Stop();
         if (!CanBeSwap) return;
         //PlaySwapAudio();
         var canvas = GetComponentInParent<Canvas>();

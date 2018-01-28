@@ -16,6 +16,8 @@ public class Controller : MonoBehaviour
     private Text WinText;
     [SerializeField]
     private string WinString = "0231";
+    [HideInInspector]
+    public bool isChecking = false;
     private void Awake()
     {
         WinText = GameObject.Find("WinText").GetComponent<Text>();
@@ -29,11 +31,16 @@ public class Controller : MonoBehaviour
         Dict["3201"] = new string[] { "任天堂还没吸取到教训吗？又出这么个玩新鲜的东西，铁定跟Kinect一样吃灰，大写的服。", "一堆破纸板箱本来看着就烦人了，现在你跟我说80刀？？？图纸还不开源？我又卜是傻逼！有这80刀，我为什么不去买其他外设？我为什么不去拼乐高机器人？我为什么要买个容易坏的烂纸盒？看不懂见个纸盒钢琴就高潮的任豚。", "都说了80刀里带了游戏本体了，你在其他平台买个游戏花个60刀不是很正常吗。实在不喜欢纸盒你可以买数字版嘛，没有人逼着你买……哎，心疼没有童心的人。", "怎么又吵起来了，好烦。" };
         Dict["3210"] = new string[] { "任天堂还没吸取到教训吗？又出这么个玩新鲜的东西，铁定跟Kinect一样吃灰，大写的服。", "一堆破纸板箱本来看着就烦人了，现在你跟我说80刀？？？图纸还不开源？我又卜是傻逼！有这80刀，我为什么不去买其他外设？我为什么不去拼乐高机器人？我为什么要买个容易坏的烂纸盒？看不懂见个纸盒钢琴就高潮的任豚。", "唔，任天堂又发新产品了，感觉挺有趣的。", "我已经忘了自己童年想要的玩具是什么了。但是任天堂还记得。" };
     }
-    public void Check()
+    public void Stop()
     {
         DOTween.Clear();
         StopAllCoroutines();
         foreach (Person p in PersoninOrder) p.Rewind();
+    }
+    public void Check()
+    {
+        Stop();
+        isChecking = true;
         StartCoroutine(IEnumCheck());
     }
     public IEnumerator IEnumCheck()
